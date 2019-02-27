@@ -4,8 +4,7 @@ import android.util.Log;
 
 public class LogicadeNiveis {
 
-    private int nivelAtual;
-    private double experienciaAtual;
+    private double experienciaNecessariaParaEvoluir;
 
     public  LogicadeNiveis(){
 
@@ -19,6 +18,7 @@ public class LogicadeNiveis {
         //Teste para verificar XP necessário
         Log.i("EvoluirProximoNivel", "ProximoNivel: " + EvoluirProximoNivel);
         Log.i("ExperienciaAtual", "Experiencia: " + experienciaAtual);
+        experienciaNecessariaParaEvoluir = EvoluirProximoNivel;
 
         if(experienciaAtual >= EvoluirProximoNivel){
             return true;
@@ -41,4 +41,7 @@ public class LogicadeNiveis {
         return novoNivelCalculado;
     }
 
+    public double getExperienciaNecessariaParaEvoluir() {
+        return experienciaNecessariaParaEvoluir;
+    }
 }

@@ -1,8 +1,11 @@
 package com.example.estudantebr.myapplicationteste;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.estudantebr.myapplicationteste.RegrasLogica.LogicadeNiveis;
 
 import java.util.ArrayList;
 
@@ -17,6 +20,12 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
     private ArrayList<Dia> diaArrayList = new ArrayList<>();
     private TextView textView_pontuacao_total;
 
+    private int nivel;
+    private int experiencia;
+
+    private TextView txtProximoNivel;
+    private TextView txtNivelAtual;
+    private TextView txtExperienciaAtual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +37,30 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
         populateData();
         updateData();
+
+        //
+        /* VARIAVEIS CRIADAS PARA FAZER OS TESTES INICIAIS
+        * -NECESSÁRIO BUSCAR ESSAS INFORMAÇÕES DO BANCO DE DADOS PARA OBTER NIVEL E EXPERIÊNCIA DO USUÁRIO
+        * -CASO QUEIRA EFETUAR O TESTE PARA VERIFICAR O NIVEL ATUAL DO USUÁRIO É NECESSÁRIO INFORMAR SEU NIVEL E EXPERIÊCIA
+        *
+        * */
+
+        LogicadeNiveis logicadeNiveis = new LogicadeNiveis();
+        nivel = 0;
+
+
+        /*Variavel de nivel Atual recebe valor do proximo nivel
+         - Ocorre a verificação do nivel de experiencia necessario para o proximo nivel.
+         - verifica se a experiencial atual é igual ou maior que a necessária para a evolução*///--------------------------------------------
+        int nivelAtual;
+        nivelAtual = logicadeNiveis.novoNivel(logicadeNiveis.verificaProximoNivel(nivel , experiencia), nivel);
+
+        Log.i("CalculoNivel", "NivelAtual: " + nivelAtual);
+        //Log.i("ExperienciaAtual","Experiencia atual" + experiencia);
+        //-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
     }
 
     private void updateData() {
@@ -39,9 +72,28 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
             }
         }
 
+        // ---------------------- Atribuindo valor para experiencia --------------------------------
+        experiencia = experiencia + pontuacao;
+        Log.i("NivelExperienciaAtual","Experiencia atual: " + experiencia);
+        // -----------------------------------------------------------------------------------------
+
+        //---------------------------Verificacao de evolução ---------------------------------------
+        LogicadeNiveis logicadeNiveis = new LogicadeNiveis();
+        int nivelAtual;
+        boolean subiuDeNivel;
+        nivelAtual = logicadeNiveis.novoNivel(logicadeNiveis.verificaProximoNivel(nivel , experiencia), nivel);
+        Log.i("NivelAtual", "Retorno do nivel Atual: " + nivelAtual );
+        subiuDeNivel = logicadeNiveis.verificaProximoNivel(nivel,experiencia);
+        if(subiuDeNivel){
+            nivel = nivelAtual;
+        }
+        //------------------------------------------------------------------------------------------
+
         //atualizar textview
         textView_pontuacao_total.setText("Pontuação total = " + Integer.toString(pontuacao));
-
+        txtProximoNivel.setText("Proximo Nivel: " + Double.toString(logicadeNiveis.getExperienciaNecessariaParaEvoluir()));
+        txtNivelAtual.setText("Nivel: " + nivel);
+        txtExperienciaAtual.setText("Experiencia: " + experiencia);
         adapter_dias.notifyDataSetChanged();
 
         Toast.makeText(this, "dados atualizados", Toast.LENGTH_LONG).show();
@@ -49,6 +101,12 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
     private void initViews() {
         textView_pontuacao_total = findViewById(R.id.textView_pontuacao_total);
+        //-------------------- Inicialização dos componentes da tela -------------------------------
+
+        txtProximoNivel = findViewById(R.id.textViewProximoNivelId);
+        txtNivelAtual = findViewById(R.id.textViewNivelId);
+        txtExperienciaAtual = findViewById(R.id.TextViewExperienciaId);
+        //------------------------------------------------------------------------------------------
     }
 
     private void populateData() {
