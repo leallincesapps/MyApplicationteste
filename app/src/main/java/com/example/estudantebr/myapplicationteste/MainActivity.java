@@ -38,28 +38,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         populateData();
         updateData();
 
-        //
-        /* VARIAVEIS CRIADAS PARA FAZER OS TESTES INICIAIS
-        * -NECESSÁRIO BUSCAR ESSAS INFORMAÇÕES DO BANCO DE DADOS PARA OBTER NIVEL E EXPERIÊNCIA DO USUÁRIO
-        * -CASO QUEIRA EFETUAR O TESTE PARA VERIFICAR O NIVEL ATUAL DO USUÁRIO É NECESSÁRIO INFORMAR SEU NIVEL E EXPERIÊCIA
-        *
-        * */
-
-        LogicadeNiveis logicadeNiveis = new LogicadeNiveis();
         nivel = 0;
-
-
-        /*Variavel de nivel Atual recebe valor do proximo nivel
-         - Ocorre a verificação do nivel de experiencia necessario para o proximo nivel.
-         - verifica se a experiencial atual é igual ou maior que a necessária para a evolução*///--------------------------------------------
-        int nivelAtual;
-        nivelAtual = logicadeNiveis.novoNivel(logicadeNiveis.verificaProximoNivel(nivel , experiencia), nivel);
-
-        Log.i("CalculoNivel", "NivelAtual: " + nivelAtual);
-        //Log.i("ExperienciaAtual","Experiencia atual" + experiencia);
-        //-----------------------------------------------------------------------------------------------------------------------------------
-
-
 
     }
 
