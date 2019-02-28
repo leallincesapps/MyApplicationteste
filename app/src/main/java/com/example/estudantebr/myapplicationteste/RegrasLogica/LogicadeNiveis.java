@@ -27,6 +27,22 @@ public class LogicadeNiveis {
         }
     }
 
+    //Verifica Nivel anterior para saber nova quantidade de experiencia
+    public int verificanivelAnterior(int nivelAtual){
+
+        int pontosBase = 2000;
+
+        if(nivelAtual <= 1){
+            double EvoluirNivelAnterior = pontosBase;
+            experienciaNecessariaParaEvoluir = EvoluirNivelAnterior;
+        }else{
+            double EvoluirNivelAnterior = pontosBase * (nivelAtual);
+            experienciaNecessariaParaEvoluir = EvoluirNivelAnterior;
+        }
+
+        return (int) experienciaNecessariaParaEvoluir;
+    }
+
     public int novoNivel(boolean verificouProximoNivel, int nivelAtual){
 
         int novoNivelCalculado = 0;

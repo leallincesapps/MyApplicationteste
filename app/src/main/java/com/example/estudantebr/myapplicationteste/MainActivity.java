@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
     private int nivel;
     private int experiencia;
+    private int experienciaNivelAnterior ;
+    private int experienciaAcumulada;
 
     private TextView txtProximoNivel;
     private TextView txtNivelAtual;
@@ -39,7 +41,8 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         updateData();
 
         nivel = 0;
-
+        experienciaNivelAnterior = 0;
+        experienciaAcumulada = 0;
     }
 
     private void updateData() {
@@ -52,19 +55,28 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         }
 
         // ---------------------- Atribuindo valor para experiencia --------------------------------
-        experiencia = experiencia + pontuacao;
-        Log.i("NivelExperienciaAtual","Experiencia atual: " + experiencia);
+        experiencia = pontuacao;
+        //Log.i("NivelExperienciaAtual","Experiencia atual: " + experiencia);
         // -----------------------------------------------------------------------------------------
 
         //---------------------------Verificacao de evolução ---------------------------------------
         LogicadeNiveis logicadeNiveis = new LogicadeNiveis();
         int nivelAtual;
         boolean subiuDeNivel;
-        nivelAtual = logicadeNiveis.novoNivel(logicadeNiveis.verificaProximoNivel(nivel , experiencia), nivel);
-        Log.i("NivelAtual", "Retorno do nivel Atual: " + nivelAtual );
-        subiuDeNivel = logicadeNiveis.verificaProximoNivel(nivel,experiencia);
+        //Verifica em qual nível atual o usuário está
+        nivelAtual = logicadeNiveis.novoNivel(logicadeNiveis.verificaProximoNivel(nivel , experiencia ), nivel);
+        //Log.i("NivelAtual", "Retorno do nivel Atual: " + nivelAtual );
+        //Verifica se usuario evoluiu retorna true ou false
+        subiuDeNivel = logicadeNiveis.verificaProximoNivel(nivel,(experiencia - experienciaAcumulada));
         if(subiuDeNivel){
             nivel = nivelAtual;
+
+            //Recebe o valor inteiro da evolução anterior
+            experienciaNivelAnterior =  logicadeNiveis.verificanivelAnterior(nivel);
+
+            //Experiencia acumulada recebe os valores das evoluções anteriores e acumula para subtrair com a pontuação total
+            experienciaAcumulada = experienciaAcumulada + experienciaNivelAnterior;
+
         }
         //------------------------------------------------------------------------------------------
 
@@ -72,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         textView_pontuacao_total.setText("Pontuação total = " + Integer.toString(pontuacao));
         txtProximoNivel.setText("Proximo Nivel: " + Double.toString(logicadeNiveis.getExperienciaNecessariaParaEvoluir()));
         txtNivelAtual.setText("Nivel: " + nivel);
-        txtExperienciaAtual.setText("Experiencia: " + experiencia);
+        txtExperienciaAtual.setText("Experiencia: " + (experiencia - experienciaAcumulada));
         adapter_dias.notifyDataSetChanged();
 
         Toast.makeText(this, "dados atualizados", Toast.LENGTH_LONG).show();

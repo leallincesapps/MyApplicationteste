@@ -9,6 +9,9 @@ public class BancoDadosEventos {
     public static int EVENTO_ENTROU_SETE_DIAS_SEGUIDOS = 2;
     public static int EVENTO_ENTROU_TRINTA_DIAS_SEGUIDOS = 3;
     public static int EVENTO_COMPLETOU_DIETA = 4;
+    public static int EVENTO_COMPLETOU_PERFIL = 5;
+    public static int EVENTO_COMPLETOU_TUTORIAL = 6;
+    public static int EVENTO_COMPLETOU_META_DIARIA = 7;
 
     public Evento getEvento(int id_evento){
 
@@ -60,6 +63,23 @@ public class BancoDadosEventos {
         pontos_evento = 10;
         arrayList.add(new Evento(id_evento, nome_evento, pontos_evento));
 
+        //NOVO EVENTO
+        id_evento = EVENTO_COMPLETOU_PERFIL;
+        nome_evento = "Completou todas as informações do Perfil";
+        pontos_evento = 350;
+        arrayList.add(new Evento(id_evento, nome_evento, pontos_evento));
+
+        //NOVO EVENTO
+        id_evento = EVENTO_COMPLETOU_TUTORIAL;
+        nome_evento = "Completou o Tutorial de Iniciante";
+        pontos_evento = 2000;
+        arrayList.add(new Evento(id_evento, nome_evento, pontos_evento));
+
+        //NOVO EVENTO
+        id_evento = EVENTO_COMPLETOU_META_DIARIA;
+        nome_evento = "Completou meta de consumo diário";
+        pontos_evento = 150;
+        arrayList.add(new Evento(id_evento, nome_evento, pontos_evento));
 
         return arrayList;
     }
