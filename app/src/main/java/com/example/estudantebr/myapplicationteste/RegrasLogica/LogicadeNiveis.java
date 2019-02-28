@@ -60,4 +60,5 @@ public class LogicadeNiveis {
     public double getExperienciaNecessariaParaEvoluir() {
         return experienciaNecessariaParaEvoluir;
     }
+
 }

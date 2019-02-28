@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         nivel = 0;
         experienciaNivelAnterior = 0;
         experienciaAcumulada = 0;
+
     }
 
     private void updateData() {
@@ -137,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         DialogSelecionarEvento dialog = new DialogSelecionarEvento();
         dialog.setListening(this);
         dialog.show(getSupportFragmentManager(), "DialogSelecionarEvento");
-
     }
 
 
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         diaArrayList.get(id_dia_editado).getEventos().clear();
         diaArrayList.get(id_dia_editado).getEventos().addAll(arrayList_evento);
         updateData();
-
+        updateData();
     }
 
 }
