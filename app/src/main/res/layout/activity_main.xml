@@ -9,17 +9,29 @@
     android:layout_margin="8dp">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/TextViewExperienciaId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Experiencia : " />
+
+    <TextView
+        android:id="@+id/textViewNivelId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Linha do tempo. Cara item pertence a um dia com os respectivos eventos do dia. Ex. dia 1, evento: Você completou seu cadastro"
         android:gravity="center"
-        />
+        android:text="Nível : " />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#e0e0e0"/>
+
+    <TextView
+        android:id="@+id/textViewProximoNivelId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Proximo Nivel: " />
+
     <TextView
         android:id="@+id/textView_pontuacao_total"
         android:layout_width="match_parent"

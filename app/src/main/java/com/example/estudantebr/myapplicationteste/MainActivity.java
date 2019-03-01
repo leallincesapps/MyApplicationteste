@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.estudantebr.myapplicationteste.RegrasLogica.LogicadeNiveis;
+
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +19,14 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
     private ArrayList<Dia> diaArrayList = new ArrayList<>();
     private TextView textView_pontuacao_total;
 
+    private int nivel;
+    private int experiencia;
+    private int experienciaNivelAnterior ;
+    private int experienciaAcumulada;
+
+    private TextView txtProximoNivel;
+    private TextView txtNivelAtual;
+    private TextView txtExperienciaAtual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +38,11 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
         populateData();
         updateData();
+
+        nivel = 0;
+        experienciaNivelAnterior = 0;
+        experienciaAcumulada = 0;
+
     }
 
     private void updateData() {
@@ -35,13 +50,41 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
         for(Dia dia : diaArrayList){
             for(Evento evento:dia.getEventos()){
-                pontuacao += evento.getPontos();
+                pontuacao += evento.getExperiencia();
             }
         }
 
+        // ---------------------- Atribuindo valor para experiencia --------------------------------
+        experiencia = pontuacao;
+        //Log.i("NivelExperienciaAtual","Experiencia atual: " + experiencia);
+        // -----------------------------------------------------------------------------------------
+
+        //---------------------------Verificacao de evolução ---------------------------------------
+        LogicadeNiveis logicadeNiveis = new LogicadeNiveis();
+        int nivelAtual;
+        boolean subiuDeNivel;
+        //Verifica em qual nível atual o usuário está
+        nivelAtual = logicadeNiveis.novoNivel(logicadeNiveis.verificaProximoNivel(nivel , experiencia ), nivel);
+        //Log.i("NivelAtual", "Retorno do nivel Atual: " + nivelAtual );
+        //Verifica se usuario evoluiu retorna true ou false
+        subiuDeNivel = logicadeNiveis.verificaProximoNivel(nivel,(experiencia - experienciaAcumulada));
+        if(subiuDeNivel){
+            nivel = nivelAtual;
+
+            //Recebe o valor inteiro da evolução anterior
+            experienciaNivelAnterior =  logicadeNiveis.verificanivelAnterior(nivel);
+
+            //Experiencia acumulada recebe os valores das evoluções anteriores e acumula para subtrair com a pontuação total
+            experienciaAcumulada = experienciaAcumulada + experienciaNivelAnterior;
+
+        }
+        //------------------------------------------------------------------------------------------
+
         //atualizar textview
         textView_pontuacao_total.setText("Pontuação total = " + Integer.toString(pontuacao));
-
+        txtProximoNivel.setText("Proximo Nivel: " + Double.toString(logicadeNiveis.getExperienciaNecessariaParaEvoluir()));
+        txtNivelAtual.setText("Nivel: " + nivel);
+        txtExperienciaAtual.setText("Experiencia: " + (experiencia - experienciaAcumulada));
         adapter_dias.notifyDataSetChanged();
 
         Toast.makeText(this, "dados atualizados", Toast.LENGTH_LONG).show();
@@ -49,6 +92,12 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
     private void initViews() {
         textView_pontuacao_total = findViewById(R.id.textView_pontuacao_total);
+        //-------------------- Inicialização dos componentes da tela -------------------------------
+
+        txtProximoNivel = findViewById(R.id.textViewProximoNivelId);
+        txtNivelAtual = findViewById(R.id.textViewNivelId);
+        txtExperienciaAtual = findViewById(R.id.TextViewExperienciaId);
+        //------------------------------------------------------------------------------------------
     }
 
     private void populateData() {
@@ -88,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         DialogSelecionarEvento dialog = new DialogSelecionarEvento();
         dialog.setListening(this);
         dialog.show(getSupportFragmentManager(), "DialogSelecionarEvento");
-
     }
 
 
@@ -98,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         diaArrayList.get(id_dia_editado).getEventos().clear();
         diaArrayList.get(id_dia_editado).getEventos().addAll(arrayList_evento);
         updateData();
-
+        updateData();
     }
 
 }

@@ -6,12 +6,12 @@ public class Evento {
 
     private int id;
     private String nome;
-    private int pontos;
+    private int experiencia;
 
-    public Evento(int id, String nome, int pontos) {
+    public Evento(int id, String nome, int experiencia) {
         this.id = id;
         this.nome = nome;
-        this.pontos = pontos;
+        this.experiencia = experiencia;
     }
 
     public int getId() {
@@ -30,11 +30,11 @@ public class Evento {
         this.nome = nome;
     }
 
-    public int getPontos() {
-        return pontos;
+    public int getExperiencia() {
+        return experiencia;
     }
 
-    public void setPontos(int pontos) {
-        this.pontos = pontos;
+    public void setExperiencia(int experiencia) {
+        this.experiencia = experiencia;
     }
 }
