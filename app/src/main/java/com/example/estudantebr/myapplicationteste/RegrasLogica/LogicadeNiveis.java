@@ -61,4 +61,69 @@ public class LogicadeNiveis {
         return experienciaNecessariaParaEvoluir;
     }
 
+
+
+    /// novo
+
+
+    private static double experienciaBase = 2000;
+
+    public double experienciaAtual(double experienciaTotal){//3000
+
+        double experienciaAtual = experienciaTotal;
+        int nivel = 0;
+        double exeperienciaAcumulada = experienciaBase*nivel;
+
+        while (experienciaAtual > exeperienciaAcumulada){
+            experienciaAtual =- exeperienciaAcumulada*nivel;
+
+            nivel++;
+            exeperienciaAcumulada = exeperienciaAcumulada*nivel;
+
+        }
+
+        return experienciaAtual;
+    }
+
+    public int getNivelAtual(double experienciaTotal){
+
+        int nivel = 0;
+        double exeperienciaAcumulada = experienciaBase*nivel;
+
+        while (experienciaTotal > exeperienciaAcumulada){
+            experienciaTotal =- exeperienciaAcumulada*nivel;
+
+            nivel++;
+            exeperienciaAcumulada = exeperienciaAcumulada*nivel;
+
+        }
+
+        return nivel;
+
+    }
+
+    public double getExperienciaNivel(int nivel){
+
+        int nivel_aux = 0;
+        double exeperienciaAcumulada = 0;
+
+        while (nivel_aux <= nivel){
+            exeperienciaAcumulada = exeperienciaAcumulada + experienciaBase*nivel_aux;
+            nivel_aux++;
+        }
+
+        return exeperienciaAcumulada;
+    }
+
+    public boolean verificarConquista(int nivel){
+
+        if(nivel == 5){
+            //nao tem conquista necessária
+            //consumir 1 conquista
+            return false;
+        }
+
+        return true;
+    }
+
 }

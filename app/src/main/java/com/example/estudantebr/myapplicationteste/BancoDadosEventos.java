@@ -35,8 +35,8 @@ public class BancoDadosEventos {
 
         //NOVO EVENTO
         id_evento = EVENTO_PRIMEIRO_ACESSO;
-        nome_evento = "Primeiro acesso ao aplicativo";
-        pontos_evento = 10;
+        nome_evento = "Evento 1";
+        pontos_evento = 400;
         arrayList.add(new Evento(id_evento, nome_evento, pontos_evento));
 
         //NOVO EVENTO

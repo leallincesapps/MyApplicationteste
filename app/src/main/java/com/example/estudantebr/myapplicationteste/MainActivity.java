@@ -1,7 +1,6 @@
 package com.example.estudantebr.myapplicationteste;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
         for(Dia dia : diaArrayList){
             for(Evento evento:dia.getEventos()){
-                pontuacao += evento.getPontos();
+                pontuacao += evento.getExperiencia();
             }
         }
 
