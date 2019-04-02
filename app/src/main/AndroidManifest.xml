@@ -18,9 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SegundoActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".Perfil.TelaPerfil"></activity>
+        <activity android:name=".Perfil.TelaPerfilNovoUsuario"></activity>
     </application>
 
 </manifest>
