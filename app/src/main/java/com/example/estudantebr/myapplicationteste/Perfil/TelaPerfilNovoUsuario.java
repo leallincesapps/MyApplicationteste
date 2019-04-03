@@ -151,15 +151,15 @@ public class TelaPerfilNovoUsuario extends AppCompatActivity implements View.OnC
         edtEmail.setText(preferences.getString("email", "vazio"));
         edtSenha.setText(preferences.getString("senha", "vazio"));
 
-        /*Uri fotoSalva = Uri.parse(preferences.getString("foto","vazio"));
+        //Uri fotoSalva = Uri.parse(preferences.getString("foto","vazio"));
 
-        this.grantUriPermission(this.getPackageName(), fotoSalva, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        /*this.grantUriPermission(this.getPackageName(), fotoSalva, Intent.FLAG_GRANT_READ_URI_PERMISSION);
         final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             this.getContentResolver().takePersistableUriPermission(fotoSalva,takeFlags);
-        }
+        }*/
 
-        fotoPerfil.setImageURI(fotoSalva);*/
+        //fotoPerfil.setImageURI(fotoSalva);
 
     }
 

@@ -38,7 +38,6 @@ public class TelaInicial extends AppCompatActivity implements BottomNavigationVi
         textViewTeste = findViewById(R.id.textViewTesteId);
         navigationView.setOnNavigationItemSelectedListener(TelaInicial.this);
 
-        recarregaDadosArquivo();
     }
 
     @Override

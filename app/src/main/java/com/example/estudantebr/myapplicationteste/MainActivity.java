@@ -47,18 +47,24 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initViews();
-        initRecyclerView();
-
-        populateData();
-        carregaArquivo();
-        //updateDataComArquivo();
-        updateData();
-        
+        //Inicializando as variaveis globais
         nivel = 0;
         experienciaNivelAnterior = 0;
         experienciaAcumulada = 0;
         pontuacaoT = 0;
+
+        //Carregando os dados do arquivo
+        carregaArquivo();
+
+        //Funcionamento dos eventos e pontuação
+        initViews();
+        initRecyclerView();
+        populateData();
+
+        //Calculo das pontuações
+        updateDataComArquivo();
+        //updateData();
+
 
         Log.d("On", "valor no on:" + nivel);
 
@@ -119,15 +125,6 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         SharedPreferences preferencesGravaPonto = getSharedPreferences("preferenciasperfil", Context.MODE_PRIVATE);
 
         int pontuacao = pontuacaoT;
-        /*experiencia = 0;
-
-        if(preferencesGravaPonto.contains("pontuacaototal")){
-            pontuacao = preferencesGravaPonto.getInt("pontuacaototal",0);
-            nivel = preferencesGravaPonto.getInt("nivel",0);
-            experiencia = preferencesGravaPonto.getInt("experienciaatual",0);
-        }*/
-
-
 
         for(Dia dia : diaArrayList){
             for(Evento evento:dia.getEventos()){
@@ -135,13 +132,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
             }
         }
 
-        boolean testaIf = false;
-        if(testaIf = preferencesGravaPonto.contains("pontuacaototal"));
-
-        if(!preferencesGravaPonto.contains("experienciaatual")){
-            experiencia = pontuacao;
-            pontuacaoT = pontuacao;
-        }
+        pontuacaoT = pontuacao;
         // ---------------------- Atribuindo valor para experiencia --------------------------------
         //experiencia = pontuacao;
         //Log.i("NivelExperienciaAtual","Experiencia atual: " + experiencia);
@@ -152,10 +143,10 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         int nivelAtual;
         boolean subiuDeNivel;
         //Verifica em qual nível atual o usuário está
-        nivelAtual = logicadeNiveis.novoNivel(logicadeNiveis.verificaProximoNivel(nivel , experiencia ), nivel);
+        nivelAtual = logicadeNiveis.novoNivel(logicadeNiveis.verificaProximoNivel(nivel , pontuacaoT ), nivel);
         //Log.i("NivelAtual", "Retorno do nivel Atual: " + nivelAtual );
         //Verifica se usuario evoluiu retorna true ou false
-        subiuDeNivel = logicadeNiveis.verificaProximoNivel(nivel,(experiencia - experienciaAcumulada));
+        subiuDeNivel = logicadeNiveis.verificaProximoNivel(nivel,(pontuacaoT - experienciaAcumulada));
         if(subiuDeNivel){
             nivel = nivelAtual;
 
@@ -165,12 +156,15 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
             //Experiencia acumulada recebe os valores das evoluções anteriores e acumula para subtrair com a pontuação total
             experienciaAcumulada = experienciaAcumulada + experienciaNivelAnterior;
 
-
+            //experiencia = pontuacaoT - experienciaAcumulada;
         }
         //------------------------------------------------------------------------------------------
-
-        //atualizar textview
+        //Calculo da experiencia Atual
+        experiencia = pontuacaoT - experienciaAcumulada;
+        //atualizar textview com os dados corretos
         textView_pontuacao_total.setText("Pontuação total = " + Integer.toString(pontuacao));
+        //Verifica para atualizar valor do novo níivel
+        logicadeNiveis.verificaProximoNivel(nivel,(pontuacaoT - experienciaAcumulada));
         txtProximoNivel.setText("Proximo Nivel: " + Double.toString(logicadeNiveis.getExperienciaNecessariaParaEvoluir()));
         txtNivelAtual.setText("Nivel: " + nivel);
         txtExperienciaAtual.setText("Experiencia: " + (experiencia));
@@ -180,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
         //int experienciaNecessaria = (int) (logicadeNiveis.getExperienciaNecessariaParaEvoluir() - experiencia);
         //Gravar Pontuação no arquivo
-        //gravaPontuacaoArquivo(pontuacao, nivel, experiencia, 1 );
+        gravaPontuacaoArquivo(pontuacaoT, nivel, experiencia, 1, experienciaAcumulada );
         //Log.d("Verifica ponto", "Valor: " + preferencesGravaPonto.getInt("experienciaproximonivel",0) );
         //Log.d("Verifica ponto", "Valor(If): " + testaIf);
         //Log.d("Verifica ponto", "Valor: " + preferencesGravaPonto.getInt("nivel",0) );
@@ -238,8 +232,8 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         //atualizar dia editado
         diaArrayList.get(id_dia_editado).getEventos().clear();
         diaArrayList.get(id_dia_editado).getEventos().addAll(arrayList_evento);
-        updateData();
-        //updateDataComArquivo();
+        //updateData();
+        updateDataComArquivo();
         //updateDataComArquivo();
     }
 
@@ -278,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         transaction.commit();
     }
 
-    private void gravaPontuacaoArquivo(int pontoGravar, int nivelGravar, int experienciaAtualGravar, int experienciaProximoNivelGravar){
+    private void gravaPontuacaoArquivo(int pontoGravar, int nivelGravar, int experienciaAtualGravar, int experienciaProximoNivelGravar, int experienciaAcumulo){
         SharedPreferences preferencesGravaPonto = getSharedPreferences("preferenciasperfil", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferencesGravaPonto.edit();
 
@@ -286,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         editor.putInt("nivel", nivelGravar);
         editor.putInt("experienciaatual", experienciaAtualGravar );
         editor.putInt("experienciaproximonivel", experienciaProximoNivelGravar);
+        editor.putInt("experienciaacumulada", experienciaAcumulo);
         editor.apply();
 
     }
@@ -294,20 +289,22 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         //Verifica se já existe pontuação salva no arquivo
         SharedPreferences preferencesGravaPonto = getSharedPreferences("preferenciasperfil", Context.MODE_PRIVATE);
 
-        pontuacaoT = 0;
-        experiencia = 0;
-
         if(preferencesGravaPonto.contains("pontuacaototal")){
             pontuacaoT = preferencesGravaPonto.getInt("pontuacaototal",0);
             nivel = preferencesGravaPonto.getInt("nivel",0);
             experiencia = preferencesGravaPonto.getInt("experienciaatual",0);
+            experienciaAcumulada = preferencesGravaPonto.getInt("experienciaacumulada",0);
+            Log.d("Carrega", "Valores carregados: " + pontuacaoT);
+            Log.d("Carrega", "Valores carregados: " + nivel);
+            Log.d("Carrega", "Valores carregados: " + experiencia);
         }
+
     }
 
 
     @Override
     protected void onStop() {
         super.onStop();
-        gravaPontuacaoArquivo(pontuacaoT, nivel,experiencia,1);
+        gravaPontuacaoArquivo(pontuacaoT, nivel,experiencia,1, experienciaAcumulada);
     }
 }

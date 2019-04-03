@@ -64,7 +64,7 @@ public class TelaPerfil extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.botaoFinalizarId:
-               // SharedPreferences preferences = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+                //SharedPreferences preferences = getContext().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
 
 
                 break;
