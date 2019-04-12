@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".NovoProjeto.Main2Activity"></activity>
         <activity android:name=".TelaInicial.TelaInicial">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".Perfil.TelaPerfilNovoUsuario"></activity>
+        <activity android:name=".Perfil.TelaPerfilNovoUsuario" />
     </application>
 
 </manifest>

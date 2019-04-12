@@ -1,15 +1,24 @@
-package com.example.estudantebr.myapplicationteste;
+package com.example.estudantebr.myapplicationteste.NovoProjeto.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.estudantebr.myapplicationteste.DataAdapter_Dias;
+import com.example.estudantebr.myapplicationteste.Dia;
+import com.example.estudantebr.myapplicationteste.DialogSelecionarEvento;
+import com.example.estudantebr.myapplicationteste.Evento;
+import com.example.estudantebr.myapplicationteste.MainActivity;
 import com.example.estudantebr.myapplicationteste.Perfil.TelaPerfilNovoUsuario;
+import com.example.estudantebr.myapplicationteste.R;
 import com.example.estudantebr.myapplicationteste.RegrasLogica.LogicadeNiveis;
 import com.example.estudantebr.myapplicationteste.TelaInicial.TelaInicial;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -17,14 +26,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.OnItemClickListener, DialogSelecionarEvento.EndDialogSelecionarEvento, BottomNavigationView.OnNavigationItemSelectedListener {
+public class Fragment_1 extends Fragment implements DataAdapter_Dias.OnItemClickListener, DialogSelecionarEvento.EndDialogSelecionarEvento, BottomNavigationView.OnNavigationItemSelectedListener {
 
+    public Fragment_1() {
+        // Required empty public constructor
+    }
 
     private DataAdapter_Dias adapter_dias;
     private ArrayList<Dia> diaArrayList = new ArrayList<>();
@@ -42,12 +53,17 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
     private TextView txtNivelAtual;
     private TextView txtExperienciaAtual;
 
+
+    private View view;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_fragment_1, container, false);
 
-
+        this.view = view;
 
         //Inicializando as variaveis globais
         nivel = 0;
@@ -71,8 +87,9 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         Log.d("On", "valor no on:" + nivel);
 
 
-
+        return view;
     }
+
 
     private void updateData() {
 
@@ -125,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
     private void updateDataComArquivo() {
 
         //Verifica se já existe pontuação salva no arquivo
-        SharedPreferences preferencesGravaPonto = getSharedPreferences("preferenciasperfil", Context.MODE_PRIVATE);
+        SharedPreferences preferencesGravaPonto = getContext().getSharedPreferences("preferenciasperfil", Context.MODE_PRIVATE);
 
         int pontuacao = pontuacaoT;
 
@@ -173,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
         txtExperienciaAtual.setText("Experiencia: " + (experiencia));
         adapter_dias.notifyDataSetChanged();
 
-        Toast.makeText(this, "dados atualizados", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "dados atualizados", Toast.LENGTH_LONG).show();
 
         //int experienciaNecessaria = (int) (logicadeNiveis.getExperienciaNecessariaParaEvoluir() - experiencia);
         //Gravar Pontuação no arquivo
@@ -185,13 +202,13 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
     }
 
     private void initViews() {
-        textView_pontuacao_total = findViewById(R.id.textView_pontuacao_total);
+        textView_pontuacao_total = view.findViewById(R.id.textView_pontuacao_total);
         //-------------------- Inicialização dos componentes da tela -------------------------------
 
-        txtProximoNivel = findViewById(R.id.textViewProximoNivelId);
-        txtNivelAtual = findViewById(R.id.textViewNivelId);
-        txtExperienciaAtual = findViewById(R.id.TextViewExperienciaId);
-        navigationViewMain = findViewById(R.id.navigationViewId);
+        txtProximoNivel = view.findViewById(R.id.textViewProximoNivelId);
+        txtNivelAtual = view.findViewById(R.id.textViewNivelId);
+        txtExperienciaAtual = view.findViewById(R.id.TextViewExperienciaId);
+        navigationViewMain = view.findViewById(R.id.navigationViewId);
         navigationViewMain.setOnNavigationItemSelectedListener(this);
 
         //------------------------------------------------------------------------------------------
@@ -207,10 +224,10 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
     }
 
     private void initRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter_dias = new DataAdapter_Dias(this, diaArrayList, this);
+        adapter_dias = new DataAdapter_Dias(getContext(), diaArrayList, this);
         recyclerView.setAdapter(adapter_dias);
     }
 
@@ -219,14 +236,14 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
 
 
-   @Override
+    @Override
     public void onItemClick(Dia dia) {
         id_dia_editado = dia.getId();
         //clicado no dia
         //abrir dialog selecionar evento
         DialogSelecionarEvento dialog = new DialogSelecionarEvento();
         dialog.setListening(this);
-        dialog.show(getSupportFragmentManager(), "DialogSelecionarEvento");
+        dialog.show(getFragmentManager(), "DialogSelecionarEvento");
     }
 
 
@@ -242,41 +259,41 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-       switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()){
 
-           case R.id.navigation_perfil:
+            case R.id.navigation_perfil:
 
-               Intent intentPerfilNovo = new Intent(MainActivity.this, TelaPerfilNovoUsuario.class);
-               startActivity(intentPerfilNovo);
-               break;
+                Intent intentPerfilNovo = new Intent(getContext(), TelaPerfilNovoUsuario.class);
+                startActivity(intentPerfilNovo);
+                break;
 
-           case R.id.navigation_eventos:
-               Intent intentEventos = new Intent(MainActivity.this, MainActivity.class);
-               startActivity(intentEventos);
-               break;
+            case R.id.navigation_eventos:
+                Intent intentEventos = new Intent(getContext(), MainActivity.class);
+                startActivity(intentEventos);
+                break;
 
-           case R.id.navigation_tela_inicial:
-               Intent intentTelaInicial = new Intent(getApplicationContext(), TelaInicial.class);
-               startActivity(intentTelaInicial);
+            case R.id.navigation_tela_inicial:
+                Intent intentTelaInicial = new Intent(getContext(), TelaInicial.class);
+                startActivity(intentTelaInicial);
 
 
-               break;
+                break;
 
-       }
+        }
 
-       return false;
+        return false;
     }
 
 
     private void openFragment(Fragment fragment){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.container,fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
     private void gravaPontuacaoArquivo(int pontoGravar, int nivelGravar, int experienciaAtualGravar, int experienciaProximoNivelGravar, int experienciaAcumulo){
-        SharedPreferences preferencesGravaPonto = getSharedPreferences("preferenciasperfil", Context.MODE_PRIVATE);
+        SharedPreferences preferencesGravaPonto = getContext().getSharedPreferences("preferenciasperfil", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferencesGravaPonto.edit();
 
         editor.putInt("pontuacaototal",pontoGravar);
@@ -290,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
     private void carregaArquivo(){
         //Verifica se já existe pontuação salva no arquivo
-        SharedPreferences preferencesGravaPonto = getSharedPreferences("preferenciasperfil", Context.MODE_PRIVATE);
+        SharedPreferences preferencesGravaPonto = getContext().getSharedPreferences("preferenciasperfil", Context.MODE_PRIVATE);
 
         if(preferencesGravaPonto.contains("pontuacaototal")){
             pontuacaoT = preferencesGravaPonto.getInt("pontuacaototal",0);
@@ -306,13 +323,8 @@ public class MainActivity extends AppCompatActivity implements DataAdapter_Dias.
 
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         gravaPontuacaoArquivo(pontuacaoT, nivel,experiencia,1, experienciaAcumulada);
-    }
-
-
-    private Context getContext(){
-       return this;
     }
 }

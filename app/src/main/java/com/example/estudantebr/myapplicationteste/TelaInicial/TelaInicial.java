@@ -1,26 +1,24 @@
 package com.example.estudantebr.myapplicationteste.TelaInicial;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.estudantebr.myapplicationteste.MainActivity;
-import com.example.estudantebr.myapplicationteste.Perfil.TelaPerfil;
+import com.example.estudantebr.myapplicationteste.NovoProjeto.Main2Activity;
 import com.example.estudantebr.myapplicationteste.Perfil.TelaPerfilNovoUsuario;
 import com.example.estudantebr.myapplicationteste.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class TelaInicial extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -33,9 +31,14 @@ public class TelaInicial extends AppCompatActivity implements BottomNavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
+
+        Toast.makeText(this, "startActivity", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, Main2Activity.class));
+
+
         navigationView = findViewById(R.id.navigationViewId);
         boasVindas = findViewById(R.id.textViewBoasVindasId);
-        textViewTeste = findViewById(R.id.textViewTesteId);
+       // textViewTeste = findViewById(R.id.textViewTesteId);
         navigationView.setOnNavigationItemSelectedListener(TelaInicial.this);
 
     }
