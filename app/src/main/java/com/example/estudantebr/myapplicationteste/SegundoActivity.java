@@ -1,17 +1,26 @@
 package com.example.estudantebr.myapplicationteste;
 
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.Toast;
 
-import com.example.estudantebr.myapplicationteste.Perfil.TelaPerfil;
 import com.example.estudantebr.myapplicationteste.TelaInicial.TelaInicial;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import pl.aprilapps.easyphotopicker.DefaultCallback;
+import pl.aprilapps.easyphotopicker.EasyImage;
 
 public class SegundoActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,6 +31,8 @@ public class SegundoActivity extends AppCompatActivity implements View.OnClickLi
 
         findViewById(R.id.botaoIniciarId).setOnClickListener(this);
 
+        EasyImage.openChooserWithGallery(this, "Select your image:", 0);
+
     }
 
     @Override
@@ -30,5 +41,7 @@ public class SegundoActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = new Intent(SegundoActivity.this, TelaInicial.class);
         startActivity(intent);
     }
+
+
 
 }

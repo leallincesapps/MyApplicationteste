@@ -15,6 +15,7 @@ import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 public class Main2Activity extends AppCompatActivity implements BottomNavigation.OnMenuItemSelectionListener{
 
 
+
     BottomNavigation mBottomNavigation;
 
 
@@ -23,14 +24,11 @@ public class Main2Activity extends AppCompatActivity implements BottomNavigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-
-        Toast.makeText(this, "Iniciou", Toast.LENGTH_LONG).show();
-
         getBottomNavigation().setDefaultSelectedIndex(0);
 
         //fragment inicial
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new Fragment_1())
+                .replace(R.id.container, new Fragment_2())
                 .addToBackStack(null)
                 .commit();
 
@@ -71,7 +69,7 @@ public class Main2Activity extends AppCompatActivity implements BottomNavigation
 
             //fragment inicial
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new Fragment_1())
+                    .replace(R.id.container, new Fragment_2())
                     .addToBackStack(null)
                     .commit();
 
@@ -80,7 +78,7 @@ public class Main2Activity extends AppCompatActivity implements BottomNavigation
 
             //fragment inicial
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new Fragment_2())
+                    .replace(R.id.container, new Fragment_1())
                     .addToBackStack(null)
                     .commit();
 

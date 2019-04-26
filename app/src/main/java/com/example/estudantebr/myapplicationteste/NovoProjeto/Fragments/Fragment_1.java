@@ -31,7 +31,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class Fragment_1 extends Fragment implements DataAdapter_Dias.OnItemClickListener, DialogSelecionarEvento.EndDialogSelecionarEvento, BottomNavigationView.OnNavigationItemSelectedListener {
+public class Fragment_1 extends Fragment implements DataAdapter_Dias.OnItemClickListener, DialogSelecionarEvento.EndDialogSelecionarEvento {
 
     public Fragment_1() {
         // Required empty public constructor
@@ -40,8 +40,6 @@ public class Fragment_1 extends Fragment implements DataAdapter_Dias.OnItemClick
     private DataAdapter_Dias adapter_dias;
     private ArrayList<Dia> diaArrayList = new ArrayList<>();
     private TextView textView_pontuacao_total;
-
-    private BottomNavigationView navigationViewMain;
 
     private int nivel;
     private int experiencia;
@@ -135,8 +133,6 @@ public class Fragment_1 extends Fragment implements DataAdapter_Dias.OnItemClick
         txtExperienciaAtual.setText("Experiencia: " + (experiencia - experienciaAcumulada));
         adapter_dias.notifyDataSetChanged();
 
-        Toast.makeText(getContext(), "dados atualizados", Toast.LENGTH_LONG).show();
-
     }
 
     private void updateDataComArquivo() {
@@ -151,12 +147,8 @@ public class Fragment_1 extends Fragment implements DataAdapter_Dias.OnItemClick
                 pontuacao += evento.getExperiencia();
             }
         }
-
+        //Atribuição da pontuação do momento para a variavel global que será salva
         pontuacaoT = pontuacao;
-        // ---------------------- Atribuindo valor para experiencia --------------------------------
-        //experiencia = pontuacao;
-        //Log.i("NivelExperienciaAtual","Experiencia atual: " + experiencia);
-        // -----------------------------------------------------------------------------------------
 
         //---------------------------Verificacao de evolução ---------------------------------------
         LogicadeNiveis logicadeNiveis = new LogicadeNiveis();
@@ -176,7 +168,6 @@ public class Fragment_1 extends Fragment implements DataAdapter_Dias.OnItemClick
             //Experiencia acumulada recebe os valores das evoluções anteriores e acumula para subtrair com a pontuação total
             experienciaAcumulada = experienciaAcumulada + experienciaNivelAnterior;
 
-            //experiencia = pontuacaoT - experienciaAcumulada;
         }
         //------------------------------------------------------------------------------------------
         //Calculo da experiencia Atual
@@ -190,15 +181,8 @@ public class Fragment_1 extends Fragment implements DataAdapter_Dias.OnItemClick
         txtExperienciaAtual.setText("Experiencia: " + (experiencia));
         adapter_dias.notifyDataSetChanged();
 
-        Toast.makeText(getContext(), "dados atualizados", Toast.LENGTH_LONG).show();
-
-        //int experienciaNecessaria = (int) (logicadeNiveis.getExperienciaNecessariaParaEvoluir() - experiencia);
         //Gravar Pontuação no arquivo
         gravaPontuacaoArquivo(pontuacaoT, nivel, experiencia, 1, experienciaAcumulada );
-        //Log.d("Verifica ponto", "Valor: " + preferencesGravaPonto.getInt("experienciaproximonivel",0) );
-        //Log.d("Verifica ponto", "Valor(If): " + testaIf);
-        //Log.d("Verifica ponto", "Valor: " + preferencesGravaPonto.getInt("nivel",0) );
-        //Log.d("Verifica ponto", "Valor: " + preferencesGravaPonto.getInt("experienciaatual",0) );
     }
 
     private void initViews() {
@@ -208,8 +192,6 @@ public class Fragment_1 extends Fragment implements DataAdapter_Dias.OnItemClick
         txtProximoNivel = view.findViewById(R.id.textViewProximoNivelId);
         txtNivelAtual = view.findViewById(R.id.textViewNivelId);
         txtExperienciaAtual = view.findViewById(R.id.TextViewExperienciaId);
-        navigationViewMain = view.findViewById(R.id.navigationViewId);
-        navigationViewMain.setOnNavigationItemSelectedListener(this);
 
         //------------------------------------------------------------------------------------------
     }
@@ -252,38 +234,10 @@ public class Fragment_1 extends Fragment implements DataAdapter_Dias.OnItemClick
         //atualizar dia editado
         diaArrayList.get(id_dia_editado).getEventos().clear();
         diaArrayList.get(id_dia_editado).getEventos().addAll(arrayList_evento);
-        //updateData();
+
         updateDataComArquivo();
-        //updateDataComArquivo();
+
     }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()){
-
-            case R.id.navigation_perfil:
-
-                Intent intentPerfilNovo = new Intent(getContext(), TelaPerfilNovoUsuario.class);
-                startActivity(intentPerfilNovo);
-                break;
-
-            case R.id.navigation_eventos:
-                Intent intentEventos = new Intent(getContext(), MainActivity.class);
-                startActivity(intentEventos);
-                break;
-
-            case R.id.navigation_tela_inicial:
-                Intent intentTelaInicial = new Intent(getContext(), TelaInicial.class);
-                startActivity(intentTelaInicial);
-
-
-                break;
-
-        }
-
-        return false;
-    }
-
 
     private void openFragment(Fragment fragment){
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
